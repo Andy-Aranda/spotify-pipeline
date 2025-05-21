@@ -1,97 +1,84 @@
-# Spotify Pipeline: Análisis de Canciones Más Escuchadas
-Este proyecto extrae tus canciones más escuchadas de Spotify, las guarda en una base de datos PostgreSQL (hosteada en AWS RDS), y permite su análisis visual en Power BI.
+# Spotify Pipeline: Top Tracks Analysis  
+This project extracts your most listened-to songs from Spotify, stores them in a PostgreSQL database (hosted on AWS RDS), and enables visual analysis in Power BI.
 
-## 🚀 ¿Qué hace este proyecto?
-1. Conecta con la API de Spotify para obtener tus canciones más escuchadas.
+## 🚀 What does this project do?
+1. Connects to the Spotify API to retrieve your top tracks.
 
-2. Transforma los datos en un formato tabular usando pandas.
+2. Transforms the data into a tabular format using pandas.
 
-3. Carga los datos en PostgreSQL, ya sea en local o en una base en la nube (como RDS).
+3. Loads the data into PostgreSQL, either locally or in a cloud-based database (like RDS).
 
-4. Permite visualizar los datos en Power BI para análisis como:
+4. Allows you to visualize the data in Power BI for analyses such as:
 
-    - Artistas más frecuentes
-
-    - Canciones más populares
-
-    - Distribución por fechas de lanzamiento
-
-    - Evolución de tus gustos musicales
+   - Most frequent artists  
+   - Most popular songs  
+   - Release date distribution  
+   - Evolution of your musical taste
 
 ## 🧱 Tech Stack
-- Python (con Spotipy, Pandas, SQLAlchemy)
+- Python (with Spotipy, Pandas, SQLAlchemy)  
+- PostgreSQL (Docker container or AWS RDS)  
+- Power BI (for visualization)  
+- GitHub Actions (coming soon for pipeline automation)
 
-- PostgreSQL (en contenedor Docker o RDS en AWS)
-
-- Power BI (para visualización)
-
-- GitHub Actions (próximamente para automatización del pipeline)
-
-## 📁 Estructura del proyecto
-``` bash
+## 📁 Project Structure
+```bash
 spotify-pipeline/
-├── main.py               # Ejecuta el pipeline completo
-├── spotify_etl.py        # Funciones para extraer y transformar los datos
-├── db_utils.py           # Guarda los datos en PostgreSQL
-├── .env                  # Variables de entorno (credenciales API y DB)
-├── requirements.txt      # Dependencias del proyecto
-└── README.md             # Este archivo 🙂
+├── main.py               # Runs the full pipeline
+├── spotify_etl.py        # Functions for extracting and transforming data
+├── db_utils.py           # Saves data into PostgreSQL
+├── .env                  # Environment variables (API and DB credentials)
+├── requirements.txt      # Project dependencies
+└── README.md             # This file 🙂
 ```
 
-## ⚙️ Configuración
-1. Clona el repo:
+## ⚙️ Setup
+1. Clone the repo:
 
-``` bash
-git clone https://github.com/tuusuario/spotify-pipeline.git
+```bash
+git clone https://github.com/yourusername/spotify-pipeline.git
 cd spotify-pipeline
 ```
 
-2. Crea un archivo .env con tus credenciales:
-``` bash
-SPOTIPY_CLIENT_ID=tu-client-id
-SPOTIPY_CLIENT_SECRET=tu-client-secret
+2. Create a `.env` file with your credentials:
+```bash
+SPOTIPY_CLIENT_ID=your-client-id
+SPOTIPY_CLIENT_SECRET=your-client-secret
 SPOTIPY_REDIRECT_URI=http://localhost:8888/callback
 
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=tu-password
+POSTGRES_PASSWORD=your-password
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=spotify
 ```
 
-3. Instala las dependencias:
+3. Install the dependencies:
 
-```bash 
+```bash
 pip install -r requirements.txt
 ```
 
-4. Ejecuta el pipeline:
+4. Run the pipeline:
 
-``` bash
+```bash
 python main.py
 ```
-5. Abre Power BI y conéctate a tu base PostgreSQL para visualizar los datos.
 
-## 🧠 Ideas de análisis en Power BI
+5. Open Power BI and connect to your PostgreSQL database to visualize the data.
 
-- Gráficas de barras por artista
+## 🧠 Power BI Analysis Ideas
+- Bar charts by artist  
+- Word cloud with track titles  
+- Popularity trends over time  
+- Comparison of new vs classic tracks  
+- Genre dashboard (if that data is added)
 
-- Nube de palabras con títulos
+## 🔒 Security Notes
+- Never commit your `.env` file to a public repository.  
+- If using RDS, make sure to set up security groups to only allow necessary IPs.
 
-- Evolución de popularidad por mes
-
-- Comparativa entre nuevos lanzamientos y clásicos
-
-- Dashboard de géneros (si se añade esa info)
-
-## 🔒 Notas de seguridad
-- Nunca subas tu .env al repositorio público.
-
-- Si usas RDS, asegúrate de configurar los grupos de seguridad para permitir solo las IPs necesarias.
-
-## ✨ Próximamente
-- Automatización diaria con GitHub Actions
-
-- Dashboard público con Power BI Web
-
-- Incorporar géneros musicales y duración
+## ✨ Coming Soon
+- Daily automation with GitHub Actions  
+- Public dashboard via Power BI Web  
+- Include genres and track duration
