@@ -1,7 +1,7 @@
 # main.py
 
-from spotify_etl import get_top_tracks
-from db_utils import save_tracks_to_db
+from scripts.spotify_etl import get_top_tracks
+from scripts.db_utils import save_tracks_to_db
 
 def main():
     print("Obteniendo canciones más escuchadas de Spotify...")
