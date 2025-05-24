@@ -37,8 +37,8 @@ def generar_popularidad_artistas(df_tracks):
 
     fig = px.bar(
         artistas_df,
-        x='artists',
-        y='popularity',
+        x='popularity',
+        y='artists',
         title='Artistas más escuchados por popularidad',
         color='artists',
         template='plotly_dark'
