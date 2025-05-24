@@ -7,7 +7,8 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine, text
 import plotly.express as px
-from scripts.visualizations import generar_top_tracks
+from scripts.visualizations import generar_top_tracks, generar_popularidad_artistas
+
 
 
 # Cargar variables de entorno
@@ -102,7 +103,9 @@ def profile():
 
     # Crear gráfica de barras
     graph_html = generar_top_tracks(df)
-    return render_template("success.html", graph_html=graph_html, current_time_range=time_range)
+    graph_artistas_html = generar_popularidad_artistas(df)
+
+    return render_template("success.html", graph_html=graph_html, graph_artistas_html=graph_artistas_html, current_time_range=time_range)
 
 if __name__ == '__main__':
     app.run(debug=True)

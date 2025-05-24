@@ -20,3 +20,33 @@ def generar_top_tracks(df):
     )
 
     return fig.to_html(full_html=False)
+
+
+import plotly.express as px
+
+def generar_popularidad_artistas(df_tracks):
+    artistas_df = (
+        df_tracks
+        .explode('artists')  # si guardaste los artistas como lista
+        .groupby('artists')['popularity']
+        .mean()
+        .sort_values(ascending=False)
+        .head(10)
+        .reset_index()
+    )
+
+    fig = px.bar(
+        artistas_df,
+        x='artists',
+        y='popularity',
+        title='Artistas más escuchados por popularidad',
+        color='artists',
+        template='plotly_dark'
+    )
+    fig.update_layout(
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        font=dict(color='white')
+    )
+
+    return fig.to_html(full_html=False)
