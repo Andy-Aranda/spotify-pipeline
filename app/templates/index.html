@@ -1,39 +1,76 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Tus canciones más escuchadas</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fff;
-            text-align: center;
-            padding: 80px;
-        }
-        h1 {
-            color: #1DB954;
-        }
-        .login-btn {
-            margin-top: 40px;
-            background-color: #1DB954;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        .login-btn:hover {
-            background-color: #1ed760;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spotify Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #380036, #0CBABA);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 40px;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .login-btn {
+      background-color: #1DB954;
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-btn:hover {
+      background-color: #1ed760;
+    }
+
+    .login-btn img {
+      width: 20px;
+      filter: brightness(0);
+
+    }
+  </style>
 </head>
 <body>
-    <h1>🎵 Tus canciones más escuchadas</h1>
-    <p>Inicia sesión con Spotify para ver tu análisis personalizado</p>
-    <a href="{{ url_for('login') }}">
-        <button class="login-btn">Iniciar sesión con Spotify</button>
+  <div class="container">
+    <h1>Your Spotify Dashboard</h1>
+    <p>Discover your top tracks and favorite artists.</p>
+    <a href="{{ url_for('login') }}" class="login-btn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo"/>
+      Login with Spotify
     </a>
+  </div>
 </body>
 </html>

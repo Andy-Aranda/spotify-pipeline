@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine, text
-from datetime import datetime
+import plotly.express as px
+from scripts.visualizations import generar_top_tracks
+
 
 # Cargar variables de entorno
 load_dotenv(dotenv_path=Path('.') / '.env')
@@ -36,21 +38,25 @@ def home():
 @app.route('/login')
 def login():
     time_range = session.get("time_range", "medium_term")
-    session["time_range"] = time_range  # Guardamos el rango en la sesión
+    session["time_range"] = time_range
 
-    sp_oauth = SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
-                             client_secret=SPOTIPY_CLIENT_SECRET,
-                             redirect_uri=SPOTIPY_REDIRECT_URI,
-                             scope=SCOPE)
+    sp_oauth = SpotifyOAuth(
+        client_id=SPOTIPY_CLIENT_ID,
+        client_secret=SPOTIPY_CLIENT_SECRET,
+        redirect_uri=SPOTIPY_REDIRECT_URI,
+        scope=SCOPE
+    )
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
 
 @app.route('/callback')
 def callback():
-    sp_oauth = SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
-                             client_secret=SPOTIPY_CLIENT_SECRET,
-                             redirect_uri=SPOTIPY_REDIRECT_URI,
-                             scope=SCOPE)
+    sp_oauth = SpotifyOAuth(
+        client_id=SPOTIPY_CLIENT_ID,
+        client_secret=SPOTIPY_CLIENT_SECRET,
+        redirect_uri=SPOTIPY_REDIRECT_URI,
+        scope=SCOPE
+    )
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session['token_info'] = token_info
@@ -61,7 +67,7 @@ def profile():
     token_info = session.get('token_info')
     if not token_info:
         return redirect(url_for('login'))
-    # 🔥 AQUÍ: obtener el rango desde la sesión, no de los args
+
     time_range = request.args.get("time_range", "medium_term")
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
@@ -70,29 +76,33 @@ def profile():
 
     top_tracks = sp.current_user_top_tracks(limit=50, time_range=time_range)
 
-    data = []
-    for item in top_tracks['items']:
-        data.append({
-            'user_id': user_id,
-            'track_name': item['name'],
-            'artists': ", ".join([artist['name'] for artist in item['artists']]),
-            'album': item['album']['name'],
-            'release_date': item['album']['release_date'],
-            'popularity': item['popularity'],
-            'spotify_url': item['external_urls']['spotify'],
-            'time_range': time_range
+    track_data = []
+    for track in top_tracks['items']:
+        track_data.append({
+            "user_id": user_id,
+            "track_name": track['name'],
+            "artists": ", ".join([artist['name'] for artist in track['artists']]),
+            "album": track['album']['name'],
+            "release_date": track['album']['release_date'],
+            "popularity": track['popularity'],
+            "spotify_url": track['external_urls']['spotify'],
+            "time_range": time_range
         })
 
+    df = pd.DataFrame(track_data)
+
+    # Eliminar anteriores
     with engine.begin() as conn:
         conn.execute(
             text("DELETE FROM multiuser_tracks WHERE user_id = :uid AND time_range = :tr"),
             {"uid": user_id, "tr": time_range}
         )
 
-    df = pd.DataFrame(data)
     df.to_sql('multiuser_tracks', engine, if_exists='append', index=False)
 
-    return render_template('success.html', tracks=data, current_time_range=time_range)
+    # Crear gráfica de barras
+    graph_html = generar_top_tracks(df)
+    return render_template("success.html", graph_html=graph_html, current_time_range=time_range)
 
 if __name__ == '__main__':
     app.run(debug=True)
