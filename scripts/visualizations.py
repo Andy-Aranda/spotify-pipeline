@@ -41,6 +41,7 @@ def generar_popularidad_artistas(df_tracks):
         y='artists',
         title='Artistas más escuchados por popularidad',
         color='artists',
+        orientation='h',
         template='plotly_dark'
     )
     fig.update_layout(

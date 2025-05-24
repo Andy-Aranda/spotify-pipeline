@@ -7,9 +7,9 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine, text
 import plotly.express as px
+import plotly.graph_objects as go
+
 from scripts.visualizations import generar_top_tracks, generar_popularidad_artistas
-
-
 
 # Cargar variables de entorno
 load_dotenv(dotenv_path=Path('.') / '.env')
@@ -99,13 +99,24 @@ def profile():
             {"uid": user_id, "tr": time_range}
         )
 
+    # Calcula el número de artistas únicos
+    num_artistas_unicos = df['artists'].explode().nunique()
+    df['artists_list'] = df['artists'].str.split(', ')
+    num_artistas_unicos = df['artists_list'].explode().nunique()
+
+
+    df.drop(columns=['artists_list'], inplace=True)
     df.to_sql('multiuser_tracks', engine, if_exists='append', index=False)
 
-    # Crear gráfica de barras
     graph_html = generar_top_tracks(df)
     graph_artistas_html = generar_popularidad_artistas(df)
 
-    return render_template("success.html", graph_html=graph_html, graph_artistas_html=graph_artistas_html, current_time_range=time_range)
+    return render_template("success.html",
+                           graph_html=graph_html,
+                           graph_artistas_html=graph_artistas_html,
+                           current_time_range=time_range,
+                           num_artistas_unicos=num_artistas_unicos
+)
 
 if __name__ == '__main__':
     app.run(debug=True)
