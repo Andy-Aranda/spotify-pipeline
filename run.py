@@ -6,9 +6,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine, text
-import plotly.express as px
-import plotly.graph_objects as go
-
 from scripts.visualizations import generar_top_tracks, generar_popularidad_artistas
 
 # Cargar variables de entorno
