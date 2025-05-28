@@ -58,6 +58,9 @@ def callback():
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session['token_info'] = token_info
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    user_profile = sp.current_user()
+    session['user_id'] = user_profile['id']
     return redirect(url_for('profile'))
 
 @app.route('/profile', methods=['GET'])
@@ -69,8 +72,9 @@ def profile():
     time_range = request.args.get("time_range", "medium_term")
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
-    user_profile = sp.current_user()
-    user_id = user_profile['id']
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
 
     top_tracks = sp.current_user_top_tracks(limit=50, time_range=time_range)
 
