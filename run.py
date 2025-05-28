@@ -61,6 +61,7 @@ def callback():
     sp = spotipy.Spotify(auth=token_info['access_token'])
     user_profile = sp.current_user()
     session['user_id'] = user_profile['id']
+    print(f"Logged in user_id: {user_profile['id']}")
     return redirect(url_for('profile'))
 
 @app.route('/profile', methods=['GET'])
@@ -73,6 +74,7 @@ def profile():
     sp = spotipy.Spotify(auth=token_info['access_token'])
 
     user_id = session.get('user_id')
+    print(f"Session user_id: {user_id}")
     if not user_id:
         return redirect(url_for('login'))
 
@@ -118,6 +120,11 @@ def profile():
                            current_time_range=time_range,
                            num_artistas_unicos=num_artistas_unicos
 )
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
