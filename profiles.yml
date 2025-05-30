@@ -1,0 +1,12 @@
+spotify_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres-spotify.cv0m8kyuwje6.us-east-2.rds.amazonaws.com  
+      user: andrea
+      password: password
+      port: 5432
+      dbname: spotify_db
+      schema: default
+      threads: 1
