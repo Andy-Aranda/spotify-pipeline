@@ -78,6 +78,33 @@ python main.py
 - Never commit your `.env` file to a public repository.  
 - If using RDS, make sure to set up security groups to only allow necessary IPs.
 
+## 🧪 Testing
+
+This project includes a comprehensive test suite covering all major components:
+
+```bash
+# Install test dependencies
+pip install pytest pytest-cov
+
+# Run all tests
+pytest
+
+# Run tests with coverage
+python run_tests.py --coverage
+
+# Run specific test categories
+pytest -m unit          # Unit tests only
+pytest -m integration   # Integration tests only
+```
+
+The test suite includes:
+- **Unit Tests**: ETL functions, visualizations, database utilities
+- **Integration Tests**: Flask routes, complete data pipeline
+- **Mocking**: All external APIs and database connections
+- **Coverage**: Comprehensive code coverage reporting
+
+See [README_TESTING.md](README_TESTING.md) for detailed testing documentation.
+
 ## ✨ Coming Soon
 - Daily automation with GitHub Actions  
 - Public dashboard via Power BI Web  

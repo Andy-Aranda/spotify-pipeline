@@ -57,5 +57,6 @@ def get_audio_features(tracks):
 
 
 
-df, tracks_ids = get_top_tracks(50, 0, "medium_term")
-get_audio_features(tracks_ids)
+if __name__ == "__main__":
+    df, tracks_ids = get_top_tracks(50, 0, "medium_term")
+    get_audio_features(tracks_ids)
